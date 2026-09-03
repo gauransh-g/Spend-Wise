@@ -28,6 +28,72 @@ SpendWise 2.0 is a full-stack personal finance application that combines **autom
 
 ---
 
+## 🏛️ System Architecture
+
+SpendWise 2.0 follows a modular multi-tier architecture separating client presentation, REST API routing, domain services (OCR, ML, Copilot, Splitwise), and database ORM storage:
+
+```mermaid
+graph TD
+    subgraph Frontend ["Client Layer (React 19 + TypeScript)"]
+        UI["Dashboard & Component Views"]
+        ClientParser["Local Receipt Parser (parseReceipt.ts)"]
+        APIClient["API Service Layer (api.ts)"]
+    end
+
+    subgraph BackendGateway ["API Gateway & Router (FastAPI)"]
+        Router["FastAPI V1 Router (/api/v1)"]
+        AuthMiddleware["JWT Auth & Security (PyJWT + Bcrypt)"]
+        CORSMiddleware["CORS Middleware"]
+    end
+
+    subgraph ServiceEngines ["Core Domain Services"]
+        OCRService["OCR Receipt Engine (PyTesseract + Heuristic Regex)"]
+        SplitService["Group Splitwise Engine (Debt Graph Ledger)"]
+        CopilotService["Copilot AI Assistant (Natural Language Resolver)"]
+        MLService["ML Intelligence (Scikit-Learn Cashflow Regressor)"]
+    end
+
+    subgraph DataLayer ["Persistence Layer"]
+        ORM["SQLAlchemy 2.0 ORM"]
+        DB[(SQLite / PostgreSQL DB)]
+    end
+
+    UI --> APIClient
+    APIClient -->|HTTP REST / JSON| Router
+    Router --> AuthMiddleware
+    AuthMiddleware --> ServiceEngines
+
+    OCRService -->|Extracted Items & Totals| ORM
+    SplitService -->|Calculated Net Balances| ORM
+    CopilotService -->|Parsed Transactions & Queries| ORM
+    MLService -->|Predictive 30-Day Forecast| Router
+
+    ORM --> DB
+```
+
+### Architecture Component Breakdown
+
+1. **Presentation & State (Frontend)**
+   - Single Page Application built with **React 19** and **TypeScript**.
+   - Modular view components (`DashboardView`, `TransactionsView`, `GroupsView`, `ReceiptScannerView`, `IntelligenceView`, `CopilotView`).
+   - Client-side fallback receipt parser for zero-latency local parsing.
+
+2. **API Gateway & Middleware (Backend)**
+   - **FastAPI** framework handling REST endpoints with Pydantic schema validation.
+   - **JWT Authentication** securing all transactional and group operations.
+   - Automatic database table creation and seed data engine on startup.
+
+3. **Domain Service Engines**
+   - **OCR Service**: Image preprocessing with Pillow, Tesseract OCR text extraction, HSN code filtering, and Rupee symbol misread auto-correction.
+   - **Splitwise Service**: Computes net balances across multi-user groups and resolves optimal debt settlements ("Who owes whom").
+   - **Copilot AI Service**: Contextual NLP query engine that parses financial commands and retrieves spend insights.
+   - **ML Intelligence Service**: Scikit-Learn linear regression model trained on transaction history to project 30-day balance trajectories.
+
+4. **Storage Layer**
+   - **SQLAlchemy 2.0 ORM** mapping relational models for Users, Accounts, Transactions, Categories, Groups, Group Members, Group Expenses, Splits, and Budgets.
+
+---
+
 ## 🛠️ Technology Stack
 
 | Layer | Technologies Used |
@@ -36,7 +102,7 @@ SpendWise 2.0 is a full-stack personal finance application that combines **autom
 | **Backend API** | FastAPI (Python 3.13), SQLAlchemy 2.0 ORM, Pydantic V2, Uvicorn |
 | **Database** | SQLite (Default for zero-config local run) / PostgreSQL supported |
 | **Machine Learning** | Scikit-Learn, Pandas, NumPy |
-| **OCR Processing** | PyTesseract, PIL (Pillow), Custom Regex Regex Engine |
+| **OCR Processing** | PyTesseract, PIL (Pillow), Custom Regex Engine |
 | **Security & Auth** | JWT Tokens (python-jose), Passlib (Bcrypt Password Hashing) |
 
 ---
@@ -151,22 +217,12 @@ The application automatically seeds a demo user on startup:
 
 ## 🐙 Pushing to GitHub
 
-To push this repository to your GitHub account:
+To push updates to your GitHub account:
 
 ```bash
-# 1. Initialize git repository in root directory
-git init
-
-# 2. Add all files (secrets and build files are ignored via .gitignore)
 git add .
-
-# 3. Commit changes
-git commit -m "feat: Initial commit of SpendWise 2.0 with OCR, ML Cashflow & Group Splits"
-
-# 4. Link your remote repository and push
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/spendwise-2.0.git
-git push -u origin main
+git commit -m "docs: Add system architecture diagram and component breakdown to README"
+git push origin main
 ```
 
 ---
