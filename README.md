@@ -1,4 +1,4 @@
-# SpendWise 2.0 💰🤖
+# SpendWise 💰🤖
 > **AI-Powered Personal Finance, OCR Receipt Scanning & Group Expense Splitting Platform**
 
 SpendWise 2.0 is a full-stack personal finance application that combines **automated receipt scanning (OCR)**, **ML cash flow forecasting**, **Splitwise-style group expense splitting**, and an **interactive AI Copilot**.
