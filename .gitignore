@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Production builds
+dist/
+frontend/dist/
+build/
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+*.env
+
+# Python & Virtual Environment
+__pycache__/
+backend/app/**/__pycache__/
+backend/tests/__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Pytest & Cache
+.pytest_cache/
+backend/.pytest_cache/
+.coverage
+htmlcov/
+
+# Databases & SQLite
+*.db
+*.sqlite3
+backend/spendwise.db
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
