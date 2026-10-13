@@ -3,6 +3,8 @@
 
 SpendWise 2.0 is a full-stack personal finance application that combines **automated receipt scanning (OCR)**, **ML cash flow forecasting**, **Splitwise-style group expense splitting**, and an **interactive AI Copilot**.
 
+![SpendWise 2.0 Dashboard Preview](docs/screenshots/spendwise_dashboard.png)
+
 ---
 
 ## ✨ Features
@@ -144,6 +146,13 @@ Spendwise 2.0/
 - **Python** 3.10 or higher
 - **Node.js** 18 or higher (with npm)
 - *(Optional)* **Tesseract OCR**: Installed on system for reading uploaded image files locally (fallback text parser available built-in).
+
+### 0️⃣ Clone Repository
+
+```bash
+git clone https://github.com/gauransh-g/Spend-Wise.git
+cd Spend-Wise
+```
 
 ---
 
